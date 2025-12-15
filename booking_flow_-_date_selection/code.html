@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Date Selection - Wanderlust Travels</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13a4ec",
+                        "primary-hover": "#0f8bc7",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased overflow-x-hidden transition-colors duration-300">
+<!-- Top Navigation -->
+<nav class="sticky top-0 z-50 w-full border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 py-3 shadow-sm">
+<div class="mx-auto flex max-w-7xl items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="size-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">flight_takeoff</span>
+</div>
+<h2 class="text-lg font-bold tracking-tight text-slate-900 dark:text-white">Wanderlust Travels</h2>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<div class="flex items-center gap-6">
+<a class="text-sm font-medium text-slate-600 hover:text-primary dark:text-slate-400 dark:hover:text-primary transition-colors" href="#">Destinations</a>
+<a class="text-sm font-medium text-slate-600 hover:text-primary dark:text-slate-400 dark:hover:text-primary transition-colors" href="#">Trips</a>
+<a class="text-sm font-medium text-slate-600 hover:text-primary dark:text-slate-400 dark:hover:text-primary transition-colors" href="#">Community</a>
+</div>
+<button class="flex items-center justify-center rounded-xl bg-primary px-5 py-2 text-sm font-bold text-white shadow-lg shadow-blue-500/30 transition-all hover:bg-primary-hover hover:scale-[1.02]">
+                    Sign In
+                </button>
+</div>
+<!-- Mobile Menu Icon -->
+<button class="md:hidden text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</nav>
+<!-- Main Content -->
+<div class="mx-auto flex w-full max-w-7xl flex-col px-4 py-6 md:px-8 lg:px-12">
+<!-- Breadcrumbs Stepper -->
+<div class="mb-8 flex flex-wrap items-center gap-2 text-sm font-medium">
+<a class="flex items-center gap-1 text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300" href="#">
+<span class="material-symbols-outlined text-[18px]">search</span>
+                Search
+            </a>
+<span class="material-symbols-outlined text-slate-300 text-[16px]">chevron_right</span>
+<div class="flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-primary">
+<span class="flex size-5 items-center justify-center rounded-full bg-primary text-[10px] text-white">2</span>
+<span>Dates</span>
+</div>
+<span class="material-symbols-outlined text-slate-300 text-[16px]">chevron_right</span>
+<span class="text-slate-400 dark:text-slate-600">Guests</span>
+<span class="material-symbols-outlined text-slate-300 text-[16px]">chevron_right</span>
+<span class="text-slate-400 dark:text-slate-600">Payment</span>
+</div>
+<div class="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-12">
+<!-- Left Column: Selection Area -->
+<div class="flex flex-col gap-8 lg:col-span-8">
+<!-- Page Heading -->
+<div class="flex flex-col gap-2">
+<h1 class="text-3xl font-black leading-tight tracking-tight text-slate-900 dark:text-white md:text-4xl">
+                        Select dates for Grand Canyon Helicopter Tour
+                    </h1>
+<div class="flex items-center gap-2 text-slate-500 dark:text-slate-400">
+<span class="material-symbols-outlined text-primary text-[20px]">verified_user</span>
+<p class="text-base font-normal">Free cancellation up to 24 hours before the trip.</p>
+</div>
+</div>
+<!-- Calendar Card -->
+<div class="flex flex-col rounded-2xl bg-white dark:bg-slate-800 p-6 shadow-sm ring-1 ring-slate-100 dark:ring-slate-700">
+<div class="mb-6 flex items-center justify-between border-b border-slate-100 pb-4 dark:border-slate-700">
+<h3 class="text-xl font-bold text-slate-900 dark:text-white">Choose your dates</h3>
+<!-- Legend -->
+<div class="hidden sm:flex items-center gap-4 text-xs font-medium">
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-slate-100 dark:bg-slate-600"></div>
+<span class="text-slate-500">Available</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-primary"></div>
+<span class="text-slate-500">Selected</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-slate-200/50 dark:bg-slate-800 border border-slate-200 line-through decoration-slate-400"></div>
+<span class="text-slate-400">Sold Out</span>
+</div>
+</div>
+</div>
+<!-- Dual Calendar Container -->
+<div class="flex flex-wrap justify-center gap-8 lg:flex-nowrap">
+<!-- Month 1: August -->
+<div class="flex w-full min-w-[280px] flex-col">
+<div class="mb-4 flex items-center justify-between px-2">
+<button class="flex size-8 items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-slate-900 dark:text-white">chevron_left</span>
+</button>
+<span class="text-base font-bold text-slate-900 dark:text-white">August 2023</span>
+<div class="size-8"></div> <!-- Spacer for alignment -->
+</div>
+<div class="mb-2 grid grid-cols-7 text-center">
+<span class="text-xs font-bold text-slate-400">S</span>
+<span class="text-xs font-bold text-slate-400">M</span>
+<span class="text-xs font-bold text-slate-400">T</span>
+<span class="text-xs font-bold text-slate-400">W</span>
+<span class="text-xs font-bold text-slate-400">T</span>
+<span class="text-xs font-bold text-slate-400">F</span>
+<span class="text-xs font-bold text-slate-400">S</span>
+</div>
+<div class="grid grid-cols-7 gap-y-2">
+<!-- Empty cells -->
+<span class="h-10"></span><span class="h-10"></span><span class="h-10"></span>
+<!-- Days -->
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">1</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">2</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">3</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">4</button>
+<!-- Start Date Selection Example -->
+<div class="relative col-span-1">
+<div class="absolute inset-y-0 right-0 w-1/2 bg-primary/20 rounded-l-none"></div>
+<button class="relative flex size-10 w-full items-center justify-center rounded-full bg-primary text-sm font-bold text-white shadow-md shadow-primary/30">5</button>
+</div>
+<!-- Range Selection -->
+<div class="relative col-span-1">
+<div class="absolute inset-y-0 inset-x-0 bg-primary/20"></div>
+<button class="relative flex size-10 w-full items-center justify-center text-sm font-medium text-slate-900 dark:text-white">6</button>
+</div>
+<div class="relative col-span-1">
+<div class="absolute inset-y-0 inset-x-0 bg-primary/20"></div>
+<button class="relative flex size-10 w-full items-center justify-center text-sm font-medium text-slate-900 dark:text-white">7</button>
+</div>
+<!-- End Date Selection -->
+<div class="relative col-span-1">
+<div class="absolute inset-y-0 left-0 w-1/2 bg-primary/20 rounded-r-none"></div>
+<button class="relative flex size-10 w-full items-center justify-center rounded-full bg-primary text-sm font-bold text-white shadow-md shadow-primary/30">8</button>
+</div>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">9</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">10</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">11</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">12</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">13</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">14</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">15</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">16</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">17</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">18</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">19</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">20</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">21</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">22</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">23</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">24</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">25</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">26</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">27</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">28</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">29</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">30</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">31</button>
+</div>
+</div>
+<!-- Divider for Desktop -->
+<div class="hidden w-px bg-slate-100 dark:bg-slate-700 lg:block"></div>
+<!-- Month 2: September -->
+<div class="flex w-full min-w-[280px] flex-col">
+<div class="mb-4 flex items-center justify-between px-2">
+<div class="size-8"></div> <!-- Spacer -->
+<span class="text-base font-bold text-slate-900 dark:text-white">September 2023</span>
+<button class="flex size-8 items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-slate-900 dark:text-white">chevron_right</span>
+</button>
+</div>
+<div class="mb-2 grid grid-cols-7 text-center">
+<span class="text-xs font-bold text-slate-400">S</span>
+<span class="text-xs font-bold text-slate-400">M</span>
+<span class="text-xs font-bold text-slate-400">T</span>
+<span class="text-xs font-bold text-slate-400">W</span>
+<span class="text-xs font-bold text-slate-400">T</span>
+<span class="text-xs font-bold text-slate-400">F</span>
+<span class="text-xs font-bold text-slate-400">S</span>
+</div>
+<div class="grid grid-cols-7 gap-y-2">
+<!-- Empty cells -->
+<span class="h-10"></span><span class="h-10"></span><span class="h-10"></span><span class="h-10"></span><span class="h-10"></span>
+<!-- Days -->
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">1</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">2</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">3</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">4</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">5</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">6</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">7</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">8</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">9</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">10</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">11</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">12</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">13</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">14</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">15</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">16</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">17</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">18</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">19</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">20</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">21</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">22</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">23</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">24</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">25</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">26</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">27</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">28</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">29</button>
+<button class="group relative flex h-10 w-full items-center justify-center rounded-full text-sm font-medium text-slate-700 hover:bg-primary/10 hover:text-primary dark:text-slate-300">30</button>
+</div>
+</div>
+</div>
+<!-- Meta Text Below Calendar -->
+<div class="mt-4 flex items-center justify-center gap-2 rounded-lg bg-blue-50 dark:bg-slate-900/50 p-2 text-center sm:justify-start">
+<span class="material-symbols-outlined text-primary text-[18px]">trending_up</span>
+<p class="text-sm font-medium text-slate-600 dark:text-slate-400">
+                            Dates in August are selling fast. Book now to secure the best price.
+                        </p>
+</div>
+</div>
+<!-- Time Selection Card -->
+<div class="flex flex-col rounded-2xl bg-white dark:bg-slate-800 p-6 shadow-sm ring-1 ring-slate-100 dark:ring-slate-700">
+<h3 class="mb-4 text-xl font-bold text-slate-900 dark:text-white">Select a start time</h3>
+<div class="flex flex-wrap gap-3">
+<button class="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-6 py-3 text-sm font-semibold text-slate-700 dark:text-slate-300 hover:border-primary hover:text-primary transition-all">
+                            08:00 AM
+                        </button>
+<button class="rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white shadow-md shadow-primary/20 transition-all hover:bg-primary-hover">
+                            10:30 AM
+                        </button>
+<button class="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-6 py-3 text-sm font-semibold text-slate-700 dark:text-slate-300 hover:border-primary hover:text-primary transition-all">
+                            01:00 PM
+                        </button>
+<button class="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-6 py-3 text-sm font-semibold text-slate-700 dark:text-slate-300 hover:border-primary hover:text-primary transition-all">
+                            03:30 PM
+                        </button>
+<button class="cursor-not-allowed rounded-xl border border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-6 py-3 text-sm font-semibold text-slate-400 dark:text-slate-600 opacity-70" disabled="">
+                            05:00 PM
+                        </button>
+</div>
+</div>
+</div>
+<!-- Right Column: Sticky Summary -->
+<div class="relative lg:col-span-4">
+<div class="sticky top-24 flex flex-col overflow-hidden rounded-2xl bg-white dark:bg-slate-800 shadow-xl ring-1 ring-slate-100 dark:ring-slate-700">
+<!-- Trip Image -->
+<div class="relative h-48 w-full overflow-hidden bg-slate-200">
+<img alt="Grand Canyon helicopter tour view over river" class="size-full object-cover transition-transform duration-700 hover:scale-105" data-alt="Grand Canyon helicopter tour view over river" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLy07s5ff2RLPnfysKNeRsKbrvB2uf7PV5YPGv9s3Hj88NzHuSMk1hf4YeHFHvZyFw5Azb-DirjLQpwyyAIZYfjEZjpStXDJYRYAj1zO3lh2PL_q022NFtmvvAnfuw22j-oqI63jHlsjfqEyBkhQfqJL3S2kczlbTSItVKlPFuAnFNJmVJtArjynU9x-c-e-oHBS9MM_9dcNt2emVVeqnau-3d1e-3fgPdDn29sA7cQEhrwKR_LWQCTU-U4ZQU6_OlpFNN35PbWA"/>
+<div class="absolute bottom-3 left-3 rounded-lg bg-white/90 px-2 py-1 text-xs font-bold text-slate-900 backdrop-blur-sm">
+                            Best Seller
+                        </div>
+</div>
+<!-- Summary Content -->
+<div class="flex flex-col gap-4 p-5">
+<div>
+<div class="mb-1 flex items-center gap-1 text-yellow-500">
+<span class="material-symbols-outlined text-[16px] fill-1">star</span>
+<span class="material-symbols-outlined text-[16px] fill-1">star</span>
+<span class="material-symbols-outlined text-[16px] fill-1">star</span>
+<span class="material-symbols-outlined text-[16px] fill-1">star</span>
+<span class="material-symbols-outlined text-[16px] fill-1">star</span>
+<span class="ml-1 text-xs font-medium text-slate-500 dark:text-slate-400">(1,203 reviews)</span>
+</div>
+<h3 class="text-lg font-bold leading-snug text-slate-900 dark:text-white">Grand Canyon Helicopter Tour</h3>
+<p class="text-sm text-slate-500 dark:text-slate-400">South Rim, Arizona</p>
+</div>
+<hr class="border-slate-100 dark:border-slate-700"/>
+<!-- Selected Details -->
+<div class="flex flex-col gap-3">
+<div class="flex items-start justify-between">
+<span class="text-sm font-medium text-slate-500 dark:text-slate-400">Dates</span>
+<div class="flex flex-col items-end">
+<span class="text-sm font-bold text-slate-900 dark:text-white">Aug 05 - Aug 08</span>
+<span class="text-xs text-slate-400">3 nights</span>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-sm font-medium text-slate-500 dark:text-slate-400">Time</span>
+<span class="text-sm font-bold text-slate-900 dark:text-white">10:30 AM</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-sm font-medium text-slate-500 dark:text-slate-400">Guests</span>
+<span class="text-sm font-bold text-slate-900 dark:text-white">2 Adults</span>
+</div>
+</div>
+<hr class="border-slate-100 dark:border-slate-700"/>
+<!-- Price Breakdown -->
+<div class="flex flex-col gap-2">
+<div class="flex justify-between text-sm">
+<span class="text-slate-500 dark:text-slate-400">$150 x 2 Guests</span>
+<span class="font-medium text-slate-900 dark:text-white">$300.00</span>
+</div>
+<div class="flex justify-between text-sm">
+<span class="text-slate-500 dark:text-slate-400">Service Fee</span>
+<span class="font-medium text-slate-900 dark:text-white">$45.00</span>
+</div>
+<div class="flex justify-between text-sm text-green-600 dark:text-green-400">
+<span>Early Bird Discount</span>
+<span class="font-medium">-$15.00</span>
+</div>
+</div>
+<!-- Total -->
+<div class="mt-2 flex items-center justify-between rounded-lg bg-slate-50 dark:bg-slate-700/50 p-3">
+<span class="font-bold text-slate-900 dark:text-white">Total</span>
+<span class="text-xl font-black text-slate-900 dark:text-white">$330.00</span>
+</div>
+<!-- Action Button -->
+<button class="mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-3.5 text-base font-bold text-white shadow-lg shadow-blue-500/30 transition-all hover:bg-primary-hover hover:scale-[1.02]">
+                            Continue to Guests
+                            <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+<div class="flex items-center justify-center gap-1 text-xs text-slate-400 mt-1">
+<span class="material-symbols-outlined text-[14px]">lock</span>
+                            Secure checkout
+                        </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body></html>

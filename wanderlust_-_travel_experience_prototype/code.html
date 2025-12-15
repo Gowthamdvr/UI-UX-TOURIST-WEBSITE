@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Wanderlust - Travel Experience Prototype</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13a4ec",
+                        "primary-hover": "#0f8bc7",
+                        "primary-dark": "#0e7cb3",
+                        "secondary": "#4c809a",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1a2c35",
+                        "text-main": "#0d171b",
+                        "text-sub": "#4c809a",
+                        "text-light": "#e7eff3",
+                        "card-light": "#ffffff",
+                        "card-dark": "#1a2c35",
+                        "neutral-bg": "#e7eff3",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "2xl": "2rem", "full": "9999px"},
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.5s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 20px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background-color: #475569;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .ticket-perforation {
+            background-image: radial-gradient(circle at center, #f6f7f8 6px, transparent 7px);
+            background-size: 100% 24px;
+            background-repeat: repeat-y;
+            background-position: left center;
+        }
+        .dark .ticket-perforation {
+            background-image: radial-gradient(circle at center, #101c22 6px, transparent 7px);
+        }
+        .ticket-border-dashed {
+            background-image: linear-gradient(to bottom, #cbd5e1 50%, transparent 50%);
+            background-size: 2px 20px;
+            background-repeat: repeat-y;
+        }
+        .dark .ticket-border-dashed {
+            background-image: linear-gradient(to bottom, #334155 50%, transparent 50%);
+        }
+    </style>
+
+    <!-- React Dependencies -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/history@5/umd/history.development.js"></script>
+    <script src="https://unpkg.com/react-router@6.3.0/umd/react-router.development.js"></script>
+    <script src="https://unpkg.com/react-router-dom@6.3.0/umd/react-router-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-[#0d171b] dark:text-white antialiased overflow-x-hidden selection:bg-primary/20 selection:text-primary">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const { createRoot } = ReactDOM;
+        const { MemoryRouter, Routes, Route, Link, useNavigate, useLocation } = ReactRouterDOM;
+
+        // --- Common Components ---
+
+        const NavigationMenu = () => {
+            const navigate = useNavigate();
+            const location = useLocation();
+            
+            // Simple overlay for prototype navigation
+            return (
+                <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-[100] bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-xl rounded-full px-4 py-2 flex items-center gap-2 overflow-x-auto max-w-[90vw] hide-scrollbar">
+                    {[
+                        { path: '/', label: 'Home 1', icon: 'home' },
+                        { path: '/home2', label: 'Home 2', icon: 'explore' },
+                        { path: '/register', label: 'Register', icon: 'person_add' },
+                        { path: '/forgot-password', label: 'Reset PW', icon: 'lock_reset' },
+                        { path: '/dashboard', label: 'Dashboard', icon: 'dashboard' },
+                        { path: '/dates', label: 'Dates', icon: 'calendar_month' },
+                        { path: '/pay', label: 'Pay', icon: 'credit_card' },
+                        { path: '/confirmation', label: 'Success', icon: 'check_circle' },
+                    ].map((link) => (
+                        <button
+                            key={link.path}
+                            onClick={() => navigate(link.path)}
+                            className={`flex flex-col items-center justify-center p-2 rounded-lg min-w-[60px] transition-colors ${
+                                location.pathname === link.path 
+                                    ? 'text-primary bg-primary/10' 
+                                    : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
+                            }`}
+                        >
+                            <span className="material-symbols-outlined text-lg">{link.icon}</span>
+                            <span className="text-[10px] font-bold whitespace-nowrap">{link.label}</span>
+                        </button>
+                    ))}
+                    <div className="h-6 w-px bg-slate-200 dark:bg-slate-700 mx-1"></div>
+                    <ThemeToggle />
+                </div>
+            );
+        };
+
+        const ThemeToggle = () => {
+            const [isDark, setIsDark] = useState(false);
+
+            useEffect(() => {
+                const html = document.documentElement;
+                if (isDark) {
+                    html.classList.add('dark');
+                } else {
+                    html.classList.remove('dark');
+                }
+            }, [isDark]);
+
+            return (
+                <button 
+                    onClick={() => setIsDark(!isDark)}
+                    className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors"
+                    title="Toggle Theme"
+                >
+                    <span className="material-symbols-outlined text-lg">
+                        {isDark ? 'light_mode' : 'dark_mode'}
+                    </span>
+                </button>
+            );
+        };
+
+        // --- Screen Components ---
+
+        // Screen 1: Register
+        const RegisterScreen = () => {
+            const navigate = useNavigate();
+            return (
+                <div className="flex flex-col lg:flex-row min-h-[calc(100vh-65px)]">
+                    <header className="absolute top-0 w-full flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#e7eff3] dark:border-b-slate-800 px-10 py-3 bg-white dark:bg-[#101c22] z-50">
+                        <div className="flex items-center gap-4 text-[#0d171b] dark:text-white cursor-pointer" onClick={() => navigate('/')}>
+                            <div className="size-8 text-primary">
+                                <span className="material-symbols-outlined text-3xl">flight_takeoff</span>
+                            </div>
+                            <h2 className="text-[#0d171b] dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">Wanderlust</h2>
+                        </div>
+                        <div className="flex flex-1 justify-end gap-8">
+                            <div className="hidden md:flex items-center gap-9">
+                                <a className="text-[#0d171b] dark:text-slate-200 text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Destinations</a>
+                                <a className="text-[#0d171b] dark:text-slate-200 text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Experiences</a>
+                                <a className="text-[#0d171b] dark:text-slate-200 text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Support</a>
+                            </div>
+                            <div className="flex gap-2">
+                                <button onClick={() => navigate('/dashboard')} className="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-[#e7eff3] hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-[#0d171b] dark:text-white text-sm font-bold leading-normal tracking-[0.015em] transition-colors">
+                                    <span className="truncate">Log In</span>
+                                </button>
+                            </div>
+                        </div>
+                    </header>
+                    
+                    <div className="flex-1 flex items-center justify-center p-6 lg:p-12 xl:p-24 bg-background-light dark:bg-background-dark mt-[65px]">
+                        <div className="w-full max-w-[480px] flex flex-col gap-6">
+                            <div className="text-left mb-2">
+                                <h1 className="text-[#0d171b] dark:text-white text-3xl md:text-4xl font-black leading-tight tracking-[-0.033em] mb-3">
+                                    Create an account
+                                </h1>
+                                <p className="text-[#4c809a] dark:text-slate-400 text-base font-normal leading-normal">
+                                    Unlock exclusive deals and start your journey today.
+                                </p>
+                            </div>
+                            <div className="flex flex-col gap-3">
+                                <button className="flex w-full items-center justify-center gap-3 rounded-xl border border-[#cfdfe7] dark:border-slate-700 bg-white dark:bg-slate-800 h-12 px-4 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                                    <img alt="Google Logo" className="w-5 h-5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1aNSmfhd0Mu5_8Wts1Q5MckHnbxwwO4aiB4rRqMECWXSpxkdkk6BOn59pTsPhcly7rYT8GvvisEM6vE8TzzZZjdgDvJuSZ1-iQP6dQKJu6Ue8QbChkLnOSU3UNAvzPw8usFGxgD3-LD3Xw3NM7NRzCtB2yLlKj3dcRG0EoSbgFN8Z6O-990vIHaldrBUBP8sBWzLl5qYAcWfQZ0uIS7wsQKUJESBuCMmEGMca5Yhy2L9L5qKQ2huA6l6Efcud-COeduprrkILpw"/>
+                                    <span className="text-[#0d171b] dark:text-white text-sm font-bold">Continue with Google</span>
+                                </button>
+                                <button className="flex w-full items-center justify-center gap-3 rounded-xl border border-[#cfdfe7] dark:border-slate-700 bg-white dark:bg-slate-800 h-12 px-4 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                                    <span className="material-symbols-outlined text-[#0d171b] dark:text-white text-xl">ios</span>
+                                    <span className="text-[#0d171b] dark:text-white text-sm font-bold">Continue with Apple</span>
+                                </button>
+                            </div>
+                            <div className="relative flex py-2 items-center">
+                                <div className="flex-grow border-t border-[#cfdfe7] dark:border-slate-700"></div>
+                                <span className="flex-shrink mx-4 text-sm text-[#4c809a] dark:text-slate-500 font-medium">Or register with email</span>
+                                <div className="flex-grow border-t border-[#cfdfe7] dark:border-slate-700"></div>
+                            </div>
+                            <form className="flex flex-col gap-4" onSubmit={(e) => { e.preventDefault(); navigate('/dashboard'); }}>
+                                <div className="flex flex-col sm:flex-row gap-4">
+                                    <label className="flex flex-col flex-1 gap-2">
+                                        <span className="text-[#0d171b] dark:text-slate-200 text-sm font-medium">First Name</span>
+                                        <input className="form-input w-full rounded-xl border border-[#cfdfe7] dark:border-slate-700 bg-white dark:bg-slate-800 text-[#0d171b] dark:text-white h-12 px-4 placeholder:text-[#4c809a] focus:border-primary focus:ring-primary transition-all shadow-sm" placeholder="Jane" type="text"/>
+                                    </label>
+                                    <label className="flex flex-col flex-1 gap-2">
+                                        <span className="text-[#0d171b] dark:text-slate-200 text-sm font-medium">Last Name</span>
+                                        <input className="form-input w-full rounded-xl border border-[#cfdfe7] dark:border-slate-700 bg-white dark:bg-slate-800 text-[#0d171b] dark:text-white h-12 px-4 placeholder:text-[#4c809a] focus:border-primary focus:ring-primary transition-all shadow-sm" placeholder="Doe" type="text"/>
+                                    </label>
+                                </div>
+                                <label className="flex flex-col gap-2">
+                                    <span className="text-[#0d171b] dark:text-slate-200 text-sm font-medium">Email Address</span>
+                                    <div className="relative">
+                                        <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[#4c809a] text-[20px]">mail</span>
+                                        <input className="form-input w-full rounded-xl border border-[#cfdfe7] dark:border-slate-700 bg-white dark:bg-slate-800 text-[#0d171b] dark:text-white h-12 pl-11 pr-4 placeholder:text-[#4c809a] focus:border-primary focus:ring-primary transition-all shadow-sm" placeholder="jane@example.com" type="email"/>
+                                    </div>
+                                </label>
+                                <label className="flex flex-col gap-2">
+                                    <span className="text-[#0d171b] dark:text-slate-200 text-sm font-medium">Password</span>
+                                    <div className="relative">
+                                        <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[#4c809a] text-[20px]">lock</span>
+                                        <input className="form-input w-full rounded-xl border border-[#cfdfe7] dark:border-slate-700 bg-white dark:bg-slate-800 text-[#0d171b] dark:text-white h-12 pl-11 pr-11 placeholder:text-[#4c809a] focus:border-primary focus:ring-primary transition-all shadow-sm" placeholder="Min. 8 characters" type="password"/>
+                                        <button className="absolute right-4 top-1/2 -translate-y-1/2 text-[#4c809a] hover:text-primary" type="button">
+                                            <span className="material-symbols-outlined text-[20px]">visibility</span>
+                                        </button>
+                                    </div>
+                                </label>
+                                <label className="flex items-start gap-3 mt-2 cursor-pointer group">
+                                    <input className="rounded border-[#cfdfe7] text-primary focus:ring-primary w-5 h-5 mt-0.5 cursor-pointer" type="checkbox"/>
+                                    <span className="text-sm text-[#4c809a] dark:text-slate-400 leading-normal group-hover:text-[#0d171b] dark:group-hover:text-slate-200 transition-colors">
+                                        I agree to the <a className="text-primary font-bold hover:underline" href="#">Terms of Service</a> and <a className="text-primary font-bold hover:underline" href="#">Privacy Policy</a>.
+                                    </span>
+                                </label>
+                                <button type="submit" className="mt-4 flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-6 bg-primary hover:bg-sky-500 text-white text-base font-bold leading-normal tracking-[0.015em] shadow-lg shadow-blue-500/30 transition-all hover:scale-[1.01] active:scale-[0.98]">
+                                    Start Exploring
+                                </button>
+                            </form>
+                            <p className="text-center text-sm text-[#4c809a] dark:text-slate-400 mt-2">
+                                Already have an account? <span onClick={() => navigate('/dashboard')} className="text-primary font-bold hover:underline cursor-pointer">Log in</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div className="hidden lg:flex flex-1 p-4 bg-background-light dark:bg-background-dark h-[calc(100vh-65px)] sticky top-[65px]">
+                        <div className="w-full h-full rounded-2xl bg-cover bg-center relative overflow-hidden shadow-2xl" style={{backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuDrbDhpXCuxZZ-BSsuJWI-2XywCWqrnExD13qzipksIMHaWeQ53l3IRPWwIAnvPG3piUpmjEAdQ3NH867d8Nqnj1ermPR7OOhWAEQmnsUrFAu3YsfSNFDJeHjztYUmJWDFYOL1KBsztSQ1hUZ4_l08XRGWIY1QB48Q_Fg93K6jPAzPngks-k7jhtusnXMEAWnvnET5eo8diTO8PDtush9iGvXJwFSb5zy8owNMV_rDTang-_vt-DkYJ5fUuIMnOMGH4EwVBBL4_zw")'}}>
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                            <div className="absolute bottom-0 left-0 w-full p-12 text-white">
+                                <div className="flex items-center gap-2 mb-4">
+                                    <div className="flex -space-x-3">
+                                        <img className="w-10 h-10 rounded-full border-2 border-white object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAafNEHCZZ_3FLDaytLAsiSr7kK_M_NstYg6ePlyk7A-3FUq9CTIOEHVJrTxlzA4jEa64i5qXwPcTmSJdtN-e2f_fGVVdUGmTM1MRIQwz2a27eZk0WPzeQjbciVW4iQ22TauNTRxmqe70gks2YNpRtrBBpCRItdqXWQStvvG7FgTd7dRpJvO8jT4_oGcDfj0mgZGo5e86wPr_KC6TtveeLLSReG2-hj5VKc3ppZ6JRUQokG-M1IBR3-VxDcaMCxM07U4qkh0sS80A"/>
+                                        <img className="w-10 h-10 rounded-full border-2 border-white object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJWSmzl0hE3qVcLIjzHvlWgTZAT5HdvjZ89FIhFqysjxy-4ByyfWENTZmUdnt2vg0Q8YPajE1b8-3U310UojBxQrtOPAQAou-GdygXqaANGsiL3Idx8t2iEEsyLvHFd61jzrGiqM3sDhQwnRIr3oC03rbXcDybGc2epVrQ59XjQMB8_V74yvcHlPFrwqpHGVIs8iTwF0FuJU8glPGaRwV3cMmoH92Oqy7JzML9tJx8Xs9yywW95OQeaMKOViQJPwA1KbHyvtdmQg"/>
+                                        <div className="w-10 h-10 rounded-full border-2 border-white bg-white/20 backdrop-blur-md flex items-center justify-center text-xs font-bold text-white">+2k</div>
+                                    </div>
+                                    <span className="text-sm font-medium text-white/90">Join thousands of travelers</span>
+                                </div>
+                                <h2 className="text-4xl font-bold leading-tight tracking-tight mb-4 max-w-md">"The journey of a thousand miles begins with a single step."</h2>
+                                <div className="flex items-center gap-2 text-white/80">
+                                    <span className="material-symbols-outlined text-primary">location_on</span>
+                                    <span className="text-sm font-semibold tracking-wide uppercase">Grand Canyon, USA</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // Screen 2: Forgot Password
+        const ForgotPasswordScreen = () => {
+            const navigate = useNavigate();
+            return (
+                <div className="relative flex min-h-screen w-full bg-background-light dark:bg-background-dark overflow-hidden">
+                    <div className="hidden lg:flex lg:w-1/2 relative bg-slate-900 h-screen">
+                        <div className="absolute inset-0 bg-cover bg-center" style={{backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuDUxEQOIDPt0M4xYVtWZ8xUDKd13fQ1VtvQ_isw41NwrZBMGdqTwGqqjYmOH21bVMFlDFTh1SiyLgHg4M0DewK_BSF_cO74mwvls_775WUEEX2iz0ZyPMJbPvHJMbPNg3IkfaN8_qE3DC3sSHRwknbuasdLKhy5NicYrZ82QnM_Vhrk2w6NQiJJhKPBeRiuBCB9QbNKwvKgKigRZT5hErXQ93BXhqzJaluaaO-3mvTX7ZCedkh6-mNdTbAF5nA6XfvxwhKFR1CZTg")'}}></div>
+                        <div className="absolute inset-0 bg-primary/20 mix-blend-multiply"></div>
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex flex-col justify-end p-16">
+                            <div className="max-w-lg">
+                                <div className="flex items-center gap-2 text-white mb-6 opacity-90">
+                                    <span className="material-symbols-outlined">flight_takeoff</span>
+                                    <span className="font-bold tracking-wide text-sm uppercase">Tourist Booking</span>
+                                </div>
+                                <blockquote className="text-white text-4xl font-bold leading-tight mb-4">"Your next adventure is waiting just around the corner."</blockquote>
+                                <p className="text-slate-200 text-lg font-medium">Recover your account to continue your journey.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="w-full lg:w-1/2 flex flex-col h-screen relative bg-background-light dark:bg-background-dark">
+                        <div className="absolute top-0 left-0 w-full p-6 lg:p-10 z-10">
+                            <button onClick={() => navigate('/register')} className="group inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 font-bold text-sm hover:text-primary transition-colors">
+                                <div className="size-8 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center group-hover:border-primary/30 transition-colors">
+                                    <span className="material-symbols-outlined text-lg">arrow_back</span>
+                                </div>
+                                <span>Back to Register</span>
+                            </button>
+                        </div>
+                        <div className="flex-1 flex items-center justify-center p-6 lg:p-12 overflow-y-auto">
+                            <div className="w-full max-w-[480px] flex flex-col gap-8">
+                                <div className="flex flex-col gap-3">
+                                    <div className="size-14 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-2">
+                                        <span className="material-symbols-outlined text-3xl">lock_reset</span>
+                                    </div>
+                                    <h1 className="text-[#0d171b] dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">Forgot your password?</h1>
+                                    <p className="text-[#4c809a] dark:text-slate-400 text-base font-normal leading-normal">Don't worry, it happens to the best of us. Enter your email below to recover your account.</p>
+                                </div>
+                                <form className="flex flex-col gap-6" onSubmit={(e) => { e.preventDefault(); alert("Recovery link sent!"); navigate('/register'); }}>
+                                    <div className="flex flex-col gap-2">
+                                        <label className="text-[#0d171b] dark:text-slate-200 text-base font-medium leading-normal" htmlFor="email">Email Address</label>
+                                        <div className="relative">
+                                            <input className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#0d171b] dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-[#cfdfe7] dark:border-slate-700 bg-white dark:bg-slate-800 focus:border-primary h-14 placeholder:text-[#4c809a] dark:placeholder:text-slate-500 px-[15px] text-base font-normal leading-normal transition-all duration-200" id="email" placeholder="name@example.com" type="email"/>
+                                            <div className="absolute right-4 top-1/2 -translate-y-1/2 text-[#4c809a] pointer-events-none">
+                                                <span className="material-symbols-outlined text-xl">mail</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button className="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-4 bg-primary text-slate-50 text-base font-bold leading-normal tracking-[0.015em] hover:bg-sky-500 hover:shadow-lg hover:shadow-primary/20 active:scale-[0.98] transition-all duration-200">
+                                        <span className="truncate">Send Recovery Link</span>
+                                    </button>
+                                </form>
+                                <div className="flex items-center justify-center gap-2 pt-2">
+                                    <span className="text-[#4c809a] dark:text-slate-400 text-sm">Remember your password?</span>
+                                    <button onClick={() => navigate('/register')} className="text-primary text-sm font-bold hover:underline decoration-2 underline-offset-2">Log In</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // Screen 3: Date Selection
+        const DateSelectionScreen = () => {
+            const navigate = useNavigate();
+            return (
+                <div className="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased overflow-x-hidden">
+                    <nav className="sticky top-0 z-50 w-full border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 py-3 shadow-sm">
+                        <div className="mx-auto flex max-w-7xl items-center justify-between">
+                            <div className="flex items-center gap-4 cursor-pointer" onClick={() => navigate('/')}>
+                                <div className="size-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+                                    <span className="material-symbols-outlined">flight_takeoff</span>
+                                </div>
+                                <h2 className="text-lg font-bold tracking-tight text-slate-900 dark:text-white">Wanderlust Travels</h2>
+                            </div>
+                            <div className="hidden md:flex items-center gap-8">
+                                <div className="flex items-center gap-6">
+                                    <a className="text-sm font-medium text-slate-600 hover:text-primary dark:text-slate-400 dark:hover:text-primary transition-colors" href="#">Destinations</a>
+                                    <a className="text-sm font-medium text-slate-600 hover:text-primary dark:text-slate-400 dark:hover:text-primary transition-colors" href="#">Trips</a>
+                                    <a className="text-sm font-medium text-slate-600 hover:text-primary dark:text-slate-400 dark:hover:text-primary transition-colors" href="#">Community</a>
+                                </div>
+                                <button onClick={() => navigate('/register')} className="flex items-center justify-center rounded-xl bg-primary px-5 py-2 text-sm font-bold text-white shadow-lg shadow-blue-500/30 transition-all hover:bg-primary-hover hover:scale-[1.02]">
+                                    Sign In
+                                </button>
+                            </div>
+                        </div>
+                    </nav>
+                    
+                    <div className="mx-auto flex w-full max-w-7xl flex-col px-4 py-6 md:px-8 lg:px-12">
+                        <div className="mb-8 flex flex-wrap items-center gap-2 text-sm font-medium">
+                            <button onClick={() => navigate('/home2')} className="flex items-center gap-1 text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300">
+                                <span className="material-symbols-outlined text-[18px]">search</span>
+                                Search
+                            </button>
+                            <span className="material-symbols-outlined text-slate-300 text-[16px]">chevron_right</span>
+                            <div className="flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-primary">
+                                <span className="flex size-5 items-center justify-center rounded-full bg-primary text-[10px] text-white">2</span>
+                                <span>Dates</span>
+                            </div>
+                            <span className="material-symbols-outlined text-slate-300 text-[16px]">chevron_right</span>
+                            <span className="text-slate-400 dark:text-slate-600">Guests</span>
+                            <span className="material-symbols-outlined text-slate-300 text-[16px]">chevron_right</span>
+                            <span className="text-slate-400 dark:text-slate-600">Payment</span>
+                        </div>
+                        
+                        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-12">
+                            <div className="flex flex-col gap-8 lg:col-span-8">
+                                <div className="flex flex-col gap-2">
+                                    <h1 className="text-3xl font-black leading-tight tracking-tight text-slate-900 dark:text-white md:text-4xl">Select dates for Grand Canyon Helicopter Tour</h1>
+                                    <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400">
+                                        <span className="material-symbols-outlined text-primary text-[20px]">verified_user</span>
+                                        <p className="text-base font-normal">Free cancellation up to 24 hours before the trip.</p>
+                                    </div>
+                                </div>
+                                {/* Calendar mock - Simplified for React component, assuming structure */}
+                                <div className="flex flex-col rounded-2xl bg-white dark:bg-slate-800 p-6 shadow-sm ring-1 ring-slate-100 dark:ring-slate-700">
+                                     <div className="mb-6 flex items-center justify-between border-b border-slate-100 pb-4 dark:border-slate-700">
+                                        <h3 className="text-xl font-bold text-slate-900 dark:text-white">Choose your dates</h3>
+                                    </div>
+                                    <img src="https://placehold.co/600x300/png?text=Calendar+Component+Mock" alt="Calendar Mock" className="w-full rounded-lg opacity-80" />
+                                </div>
+                            </div>
+                            
+                            <div className="relative lg:col-span-4">
+                                <div className="sticky top-24 flex flex-col overflow-hidden rounded-2xl bg-white dark:bg-slate-800 shadow-xl ring-1 ring-slate-100 dark:ring-slate-700">
+                                    <div className="relative h-48 w-full overflow-hidden bg-slate-200">
+                                        <img alt="Grand Canyon" className="size-full object-cover transition-transform duration-700 hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLy07s5ff2RLPnfysKNeRsKbrvB2uf7PV5YPGv9s3Hj88NzHuSMk1hf4YeHFHvZyFw5Azb-DirjLQpwyyAIZYfjEZjpStXDJYRYAj1zO3lh2PL_q022NFtmvvAnfuw22j-oqI63jHlsjfqEyBkhQfqJL3S2kczlbTSItVKlPFuAnFNJmVJtArjynU9x-c-e-oHBS9MM_9dcNt2emVVeqnau-3d1e-3fgPdDn29sA7cQEhrwKR_LWQCTU-U4ZQU6_OlpFNN35PbWA"/>
+                                    </div>
+                                    <div className="flex flex-col gap-4 p-5">
+                                        <h3 className="text-lg font-bold leading-snug text-slate-900 dark:text-white">Grand Canyon Helicopter Tour</h3>
+                                        <div className="mt-2 flex items-center justify-between rounded-lg bg-slate-50 dark:bg-slate-700/50 p-3">
+                                            <span className="font-bold text-slate-900 dark:text-white">Total</span>
+                                            <span className="text-xl font-black text-slate-900 dark:text-white">$330.00</span>
+                                        </div>
+                                        <button onClick={() => navigate('/pay')} className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-3.5 text-base font-bold text-white shadow-lg shadow-blue-500/30 transition-all hover:bg-primary-hover hover:scale-[1.02]">
+                                            Continue to Payment
+                                            <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // Screen 4: Pay
+        const PayScreen = () => {
+            const navigate = useNavigate();
+            return (
+                <div className="bg-background-light dark:bg-background-dark font-display text-text-main dark:text-white min-h-screen flex flex-col antialiased">
+                    <header className="sticky top-0 z-50 bg-surface-light/80 dark:bg-surface-dark/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+                        <div className="px-4 md:px-10 py-3 max-w-[1400px] mx-auto flex items-center justify-between">
+                            <div className="flex items-center gap-4 cursor-pointer" onClick={() => navigate('/')}>
+                                <div className="size-8 text-primary">
+                                    <span className="material-symbols-outlined text-3xl">flight_takeoff</span>
+                                </div>
+                                <h2 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">TravelCo</h2>
+                            </div>
+                        </div>
+                    </header>
+                    <main className="flex-grow w-full max-w-[1200px] mx-auto px-4 md:px-8 py-8 md:py-12">
+                        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-6">
+                            <div className="flex flex-col gap-2">
+                                <h1 className="text-3xl md:text-4xl font-black tracking-tight text-slate-900 dark:text-white">Confirm and Pay</h1>
+                            </div>
+                        </div>
+                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                            <div className="lg:col-span-8 flex flex-col gap-8">
+                                <div className="bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 overflow-hidden">
+                                    <div className="p-6 md:p-8">
+                                        <div className="flex flex-col-reverse md:grid md:grid-cols-2 gap-8">
+                                            <div className="space-y-5">
+                                                <div className="space-y-1.5">
+                                                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Card Number</label>
+                                                    <input className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-3 text-slate-900 dark:text-white" placeholder="0000 0000 0000 0000" type="text"/>
+                                                </div>
+                                                 <div className="grid grid-cols-2 gap-4">
+                                                    <input className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-3" placeholder="MM / YY" type="text"/>
+                                                    <input className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-3" placeholder="CVC" type="password"/>
+                                                </div>
+                                            </div>
+                                            <div className="flex flex-col justify-center">
+                                                <div className="relative w-full aspect-[1.586] rounded-2xl bg-gradient-to-br from-primary to-primary-dark shadow-xl text-white p-6 flex flex-col justify-between overflow-hidden">
+                                                     <div className="font-mono text-2xl tracking-widest drop-shadow-md">•••• •••• •••• 4242</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="mt-8">
+                                            <button onClick={() => navigate('/confirmation')} className="w-full bg-primary hover:bg-primary-dark text-white text-lg font-bold py-3.5 px-10 rounded-xl shadow-lg shadow-primary/30 transition-all flex items-center justify-center gap-2">
+                                                Pay $1,450.00
+                                                <span className="material-symbols-outlined">arrow_forward</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="lg:col-span-4 sticky top-24 space-y-6">
+                                <div className="bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 overflow-hidden">
+                                    <div className="relative h-48 w-full">
+                                        <div className="absolute inset-0 bg-cover bg-center" style={{backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuC2_3jAcfV2pb1luGwbWqnJbADhmHxe8rqHooRkZ1dZmfZhSjNf688hBFgwZRUfj9H5eNuGx_Qir6GtVDskRlSw58uyHBQBrnuSGjYVIrxHz5q7QrnVcYA3fZ51paeAzLE8XxqGSsFn1PVCG6BojZNVnYhSgb54uKaupOWfDWOK-t5AvcCDf2ARhpPIIlet04qg0hkheuLVSXnYtijiEm9wXj2IDC90PJYXKugk7xuT4PvdwSP92q5JkZXt4Z9JMAEkobivFaBv1w")'}}></div>
+                                    </div>
+                                    <div className="p-5">
+                                        <h3 className="text-lg font-bold text-slate-900 dark:text-white leading-tight">Oceanview Resort</h3>
+                                        <div className="flex justify-between items-end mt-4 pt-4 border-t border-dashed border-slate-300 dark:border-slate-700">
+                                            <p className="text-sm text-slate-500 mb-0.5">Total Amount</p>
+                                            <span className="text-2xl font-black text-slate-900 dark:text-white">$1,450.00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+            );
+        };
+
+        // Screen 5: Confirmation
+        const ConfirmationScreen = () => {
+            const navigate = useNavigate();
+            return (
+                <div className="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display flex min-h-screen flex-col">
+                    <header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/80 backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/80">
+                        <div className="mx-auto flex h-16 max-w-[1200px] items-center justify-between px-4 sm:px-6 lg:px-8">
+                            <div className="flex items-center gap-8 cursor-pointer" onClick={() => navigate('/')}>
+                                <div className="flex items-center gap-2">
+                                    <div className="flex size-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                                        <span className="material-symbols-outlined text-2xl">flight_takeoff</span>
+                                    </div>
+                                    <span className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">Wanderlust</span>
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+                    <main className="flex-grow px-4 py-8 sm:px-6 lg:px-8">
+                        <div className="mx-auto max-w-[960px] space-y-8">
+                            <div className="flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between animate-fade-in-up">
+                                <div className="flex gap-4">
+                                    <div className="mt-1 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400">
+                                        <span className="material-symbols-outlined text-3xl">check_circle</span>
+                                    </div>
+                                    <div>
+                                        <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white md:text-4xl">Pack your bags, Alex!</h1>
+                                        <p className="mt-1 text-lg text-slate-500 dark:text-slate-400">Your trip to Bali is confirmed. Order #TRV-88291</p>
+                                    </div>
+                                </div>
+                                <div className="flex gap-3">
+                                    <button onClick={() => navigate('/dashboard')} className="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary/90">
+                                        Go to Dashboard
+                                    </button>
+                                </div>
+                            </div>
+                            <div className="relative overflow-hidden rounded-2xl bg-white shadow-xl dark:bg-slate-800 border border-slate-100 dark:border-slate-700 flex flex-col md:flex-row">
+                                <div className="absolute left-0 top-0 h-1.5 w-full bg-gradient-to-r from-primary to-cyan-400 md:h-full md:w-1.5 md:bg-gradient-to-b"></div>
+                                <div className="flex-1 p-6 md:p-8">
+                                    <h2 className="text-2xl font-bold text-slate-900 dark:text-white">The Azure Resort & Spa</h2>
+                                    <div className="mt-8 flex gap-3">
+                                        <button className="text-primary hover:text-primary/80 font-semibold text-sm flex items-center gap-1">
+                                            <span className="material-symbols-outlined text-lg">calendar_add_on</span>
+                                            Add to Calendar
+                                        </button>
+                                    </div>
+                                </div>
+                                <div className="relative hidden md:block w-px bg-transparent">
+                                    <div className="absolute inset-y-0 -left-3 w-6 ticket-perforation z-10"></div>
+                                    <div className="h-full w-px ticket-border-dashed absolute left-0 top-0"></div>
+                                </div>
+                                <div className="bg-slate-50 dark:bg-slate-800/50 p-6 md:w-80 flex flex-col justify-between">
+                                    <div>
+                                        <h3 className="font-bold text-slate-900 dark:text-white">Booking Summary</h3>
+                                        <div className="mt-4 space-y-3">
+                                            <div className="flex justify-between text-base font-bold">
+                                                <span className="text-slate-900 dark:text-white">Total Paid</span>
+                                                <span className="text-primary">$1,240.00</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+            );
+        };
+
+        // Screen 6: Dashboard
+        const DashboardScreen = () => {
+            const navigate = useNavigate();
+            return (
+                <div className="bg-background-light dark:bg-background-dark text-text-main dark:text-white overflow-hidden h-screen flex">
+                    <aside className="w-72 bg-white dark:bg-slate-900 h-full flex flex-col border-r border-slate-100 dark:border-slate-800 hidden lg:flex flex-shrink-0 transition-all">
+                        <div className="p-8 pb-4 flex items-center gap-3 cursor-pointer" onClick={() => navigate('/')}>
+                             <div className="size-8 text-primary flex items-center justify-center">
+                                <span className="material-symbols-outlined text-3xl">flight_takeoff</span>
+                            </div>
+                            <h1 className="text-xl font-bold tracking-tight">Wanderlust</h1>
+                        </div>
+                        <nav className="flex-1 overflow-y-auto px-6 py-2 flex flex-col gap-2">
+                             <a className="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 text-primary transition-colors" href="#">
+                                <span className="material-symbols-outlined text-[24px]">dashboard</span>
+                                <span className="text-sm font-bold">Dashboard</span>
+                            </a>
+                            <button onClick={() => navigate('/register')} className="w-full mt-auto mb-6 flex items-center justify-center gap-2 rounded-xl h-10 bg-neutral-bg dark:bg-slate-800 text-dark-text dark:text-white text-sm font-bold hover:bg-slate-200 transition-colors">
+                                <span>Log Out</span>
+                            </button>
+                        </nav>
+                    </aside>
+                    <main className="flex-1 flex flex-col h-full overflow-hidden relative">
+                         <header className="h-20 flex items-center justify-between px-8 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-100 dark:border-slate-800 z-10 sticky top-0">
+                             <div className="flex items-center gap-4 flex-1 max-w-lg">
+                                 <label className="flex items-center w-full h-11 bg-background-light dark:bg-slate-800 rounded-xl px-4 border border-transparent focus-within:border-primary/30 transition-all">
+                                    <span className="material-symbols-outlined text-secondary">search</span>
+                                    <input className="bg-transparent border-none focus:ring-0 w-full text-sm text-dark-text dark:text-white placeholder-secondary ml-2 font-medium" placeholder="Search..." type="text"/>
+                                </label>
+                             </div>
+                        </header>
+                        <div className="flex-1 overflow-y-auto p-6 md:p-8">
+                             <div className="max-w-7xl mx-auto space-y-8">
+                                <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                                    <div>
+                                        <h1 className="text-3xl md:text-4xl font-extrabold text-dark-text dark:text-white tracking-tight mb-2">Good morning, Alex 👋</h1>
+                                        <p className="text-secondary font-medium">You have 1 upcoming trip.</p>
+                                    </div>
+                                    <button onClick={() => navigate('/home2')} className="flex items-center gap-2 bg-primary hover:bg-sky-500 text-white px-6 py-3 rounded-xl font-bold transition-all shadow-lg shadow-primary/20">
+                                        <span className="material-symbols-outlined text-[20px]">add_circle</span>
+                                        Plan a Trip
+                                    </button>
+                                </div>
+                                <div className="bg-white dark:bg-slate-800 rounded-2xl p-2 shadow-sm border border-slate-100 dark:border-slate-700 group cursor-pointer" onClick={() => navigate('/dates')}>
+                                    <div className="relative w-full h-64 md:h-80 rounded-xl overflow-hidden">
+                                        <img className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBz6x5T0cu0UtKTUCvIutrTwfSLb9dktkkHZGgMNLybiw7OAFJxDh-5ErC6ykid5tD_WlVQZY54cuRmI5jlJUApW58m4XtJIUWNEyU9-HJCJ4L8jHoNbxtaKC8L88h2WqcLPViJ9idz2rSIYMY4kRMSoXUwKat1M2sMIe6GYfzlcRHZL_vVPt1MVhTlgYA9Y4AM04jvE3hzTMaSE74oqLI6UA7Kj-iYny1MryL_iMt16Tz0hMsRxXWR9lcY-9iySDS5hFg4s_wvrg" alt="Bali"/>
+                                        <div className="absolute bottom-6 left-6 text-white">
+                                            <h2 className="text-3xl md:text-4xl font-bold mb-1">Bali, Indonesia</h2>
+                                            <p className="text-white/80">Flight GA-890 • Waldorf Astoria Bali</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+            );
+        };
+
+        // Screen 7: Home Variant 1
+        const HomeVariant1Screen = () => {
+            const navigate = useNavigate();
+            return (
+                <div className="bg-background-light dark:bg-background-dark text-text-main dark:text-text-light font-display antialiased overflow-x-hidden min-h-screen">
+                    <header className="sticky top-0 z-50 bg-white/90 dark:bg-background-dark/90 backdrop-blur-md border-b border-[#e7eff3] dark:border-gray-800">
+                        <div className="max-w-[1280px] mx-auto px-4 sm:px-10 py-3">
+                            <div className="flex items-center justify-between whitespace-nowrap">
+                                <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
+                                    <div className="text-primary">
+                                        <span className="material-symbols-outlined text-3xl">travel_explore</span>
+                                    </div>
+                                    <h2 className="text-text-main dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">TravelEase</h2>
+                                </div>
+                                <div className="hidden md:flex items-center gap-8">
+                                    <div className="flex gap-2">
+                                        <button onClick={() => navigate('/register')} className="flex items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary hover:bg-primary-dark text-white text-sm font-bold transition-colors">
+                                            Sign Up
+                                        </button>
+                                        <button onClick={() => navigate('/register')} className="flex items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#e7eff3] hover:bg-gray-200 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 text-text-main text-sm font-bold transition-colors">
+                                            Login
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+                    <main className="flex flex-col">
+                        <section className="relative px-4 sm:px-10 py-5 flex justify-center">
+                            <div className="max-w-[1280px] w-full flex flex-col">
+                                <div className="relative overflow-hidden rounded-xl min-h-[560px] flex items-center justify-center text-center p-6 bg-cover bg-center" style={{backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.5) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuALLB7a8hirmXc6qfMPo0WsMzH43MbWjO2m7vfem1QwUGfOVo35-ZYRtnFod3ldtJr6qK7X1MENFSS6BSIt_4EXoHAm56YRzTBrjxpaNZbmilUODh0M4Hs9pmxJEdFYoKQa-LNatmWSjqS3cyz2rNmpmoItzp0JHWx0qO_JkDVZYoEm5_0JZulN-5A71hcw7tE_qUGKfK42dvCqwSQR3VJNIr7R0h6CgF9n7hnuDUw9Q-Etg8U8RVH0cAySCCga69cOMdV2Zd5Anw")'}}>
+                                    <div className="relative z-10 flex flex-col gap-6 max-w-4xl mx-auto items-center">
+                                        <h1 className="text-white text-4xl sm:text-5xl md:text-6xl font-black leading-tight tracking-[-0.033em] drop-shadow-sm">
+                                            Explore the World with Confidence
+                                        </h1>
+                                        <div className="mt-4 w-full max-w-[800px] bg-white dark:bg-card-dark p-2 rounded-xl shadow-xl flex flex-col md:flex-row gap-2">
+                                            <div className="flex-1 flex items-center px-4 py-2 border-b md:border-b-0 md:border-r border-gray-100 dark:border-gray-700">
+                                                <span className="material-symbols-outlined text-primary mr-3">location_on</span>
+                                                <input className="w-full p-0 text-sm font-semibold border-none focus:ring-0 bg-transparent dark:text-white placeholder:text-gray-400" placeholder="Where are you going?" type="text"/>
+                                            </div>
+                                            <button onClick={() => navigate('/home2')} className="bg-primary hover:bg-primary-dark text-white rounded-lg px-8 py-3 font-bold transition-all shadow-md md:h-auto h-12 flex items-center justify-center gap-2">
+                                                <span className="material-symbols-outlined">search</span>
+                                                <span>Search</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section className="py-10 px-4 sm:px-10 flex justify-center">
+                             <div className="max-w-[1280px] w-full">
+                                <h2 className="text-text-main dark:text-white text-2xl sm:text-3xl font-bold leading-tight tracking-tight mb-6">Popular Destinations</h2>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                                    <div onClick={() => navigate('/dates')} className="group relative h-[320px] rounded-xl overflow-hidden cursor-pointer">
+                                        <img className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6YPAnORPXP3PTZxBhD1SrLP_KbiuCsNtk0lHoFYgpNUgymoKYGAVAzDpB-gfN7Qo6iSAZKCu4Vi99vQVcdIra8duLMUUZzXLYHd5OjFi4AmkOlCHNK0QKeSkxC_3t_AxlKcol3pJvwTeKMK912YUByesaizhrB7lLrQ1CNO1xjA4cVRFhzky1VVHMfzKl_jThto70q1eUvG5bNB3_5i7SaYBmLNDQTU0LhS9uHAp7kmvt53tdOac7v_qcfIYzozxwgEiEqyY5VQ" alt="Bali"/>
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+                                        <div className="absolute bottom-4 left-4 text-white">
+                                            <h3 className="text-xl font-bold">Bali</h3>
+                                            <p className="text-sm opacity-90">Indonesia</p>
+                                        </div>
+                                    </div>
+                                    {/* Additional mock destinations for layout */}
+                                     <div className="group relative h-[320px] rounded-xl overflow-hidden cursor-pointer md:col-span-2">
+                                        <img className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWS4WzlnMprwu3x0_K_axApqf_2bUb0Fx01ofWP0uYzyefc1GBXXGIyDbX3RZwrKWqdQsGRb1xg-RqpOaF0HXBQIrJOPSqtB16nq59FcaHWbC-QpxeItoLTEnIiepRNKf6fJ9OEbj0IH9gwcDjajK3LiGvXaKco_n2tO4Or0wGH5mlUe_m_ekXFZCTDkQtIspusSLom_pCXSXqjvRKU-fjQjKAW3BdLyoBq-wjhwx-9JX920YGbMtCV8sLG_P2q84WXpsFfUajIw" alt="Rome"/>
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+                                         <div className="absolute bottom-4 left-4 text-white">
+                                            <h3 className="text-xl font-bold">Rome</h3>
+                                            <p className="text-sm opacity-90">Italy</p>
+                                        </div>
+                                    </div>
+                                     <div className="group relative h-[320px] rounded-xl overflow-hidden cursor-pointer">
+                                        <img className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVxr-080N8v1fdET0FmxFd0GFhprgrTkxokubo0C9agdDYuxwePXTbz_rKXCyD3TegyofXaxt9YeKM9QMrp5aOXt56dynr7A3ncjuAcFBxaD8Ip1qLT6R5-sFq7ZerIIp73yQwx0s_RE5uEXok5kZKumwuoXkesiXhRaKTibKmYECWlOZWM7SkBTIXRqygAKpn-d4DK_V6ZrEiq0cPjWa3gz2DgviWIX5UCyqiQLQhWyn61OW33IcktoHri32PJJRvNQiNJ1rR-w" alt="Kyoto"/>
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+                                        <div className="absolute bottom-4 left-4 text-white">
+                                            <h3 className="text-xl font-bold">Kyoto</h3>
+                                            <p className="text-sm opacity-90">Japan</p>
+                                        </div>
+                                    </div>
+                                </div>
+                             </div>
+                        </section>
+                    </main>
+                </div>
+            );
+        };
+
+        // Screen 8: Home Variant 2
+        const HomeVariant2Screen = () => {
+             const navigate = useNavigate();
+             return (
+                <div className="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-50 min-h-screen flex flex-col">
+                    <nav className="sticky top-0 z-50 bg-white/90 dark:bg-background-dark/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+                        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+                            <div className="flex items-center justify-between h-20">
+                                <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/')}>
+                                    <div className="text-primary">
+                                        <span className="material-symbols-outlined text-3xl">public</span>
+                                    </div>
+                                    <span className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">Travelia</span>
+                                </div>
+                                <div className="hidden md:flex items-center gap-8">
+                                    <button onClick={() => navigate('/register')} className="bg-primary hover:bg-sky-500 text-white px-5 py-2.5 rounded-xl text-sm font-bold transition-all shadow-lg shadow-primary/25">
+                                        Sign In
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+                    <section className="relative pt-8 pb-16 overflow-hidden">
+                        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+                            <div className="grid lg:grid-cols-12 gap-12 items-center">
+                                <div className="lg:col-span-5 flex flex-col gap-8 relative z-10">
+                                    <div className="space-y-4">
+                                        <h1 className="text-5xl sm:text-6xl font-black leading-[1.1] tracking-tight text-slate-900 dark:text-white">
+                                            Discover the world's <span className="text-primary">hidden gems</span>.
+                                        </h1>
+                                        <p className="text-lg text-slate-600 dark:text-slate-400 font-medium leading-relaxed max-w-md">
+                                            Start your next adventure with curated tours, exclusive deals, and experiences you won't find anywhere else.
+                                        </p>
+                                    </div>
+                                    <div className="bg-white dark:bg-slate-800 p-2 rounded-2xl shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-slate-700">
+                                        <form className="flex flex-col sm:flex-row gap-2" onSubmit={(e) => { e.preventDefault(); navigate('/dates'); }}>
+                                            <div className="flex-1 flex items-center px-4 h-14 bg-slate-50 dark:bg-slate-900 rounded-xl group focus-within:ring-2 focus-within:ring-primary/20 transition-all">
+                                                <span className="material-symbols-outlined text-slate-400 group-focus-within:text-primary">search</span>
+                                                <input className="w-full bg-transparent border-none focus:ring-0 text-slate-900 dark:text-white placeholder:text-slate-400 font-medium" placeholder="Where to?" type="text"/>
+                                            </div>
+                                            <button className="h-14 px-8 bg-primary hover:bg-sky-500 text-white rounded-xl font-bold transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary/20" type="submit">
+                                                <span className="material-symbols-outlined">explore</span>
+                                                Search
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div className="lg:col-span-7 relative h-[500px] lg:h-[600px] hidden sm:block">
+                                    <div className="grid grid-cols-2 gap-4 h-full">
+                                        <div className="flex flex-col gap-4 mt-12">
+                                            <div className="h-64 w-full bg-cover bg-center rounded-2xl shadow-lg" style={{backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuClGU-FJWgVsg-sXfU4GchcaM4C2mx77OKCmbfpWNk44rkZo2b4D3Xr-vBDnbilIlbCrwjb4WyOwkphURsqdP56uEH9TIDhFpwfmq4DZpicEfW3xikhmzbSq89RjxXpEs8Ld-skOdIxfnn2VYR1cAGnlOm8lSiqWdAsTKIx9FMhfai2HDOp7hvyAWREWgC5hjEoBNxoThNrZWVMlQ3RBNQdZbvhOxdAoxck1oJyNNmr3wWlaMncIRexshjvjeavvCFTG8lyNN0J5w")'}}></div>
+                                            <div className="h-48 w-full bg-cover bg-center rounded-2xl shadow-lg" style={{backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuAjzRhbHIHPPwoT_NMdFvjv_hyRL5KZbaZZKpRAjWX2DWdpKSe0WZyfcU3MmEKEmN3pygyq9tTVyq03b21wMaTiDt75GRV6gSX5BGGEGgQxfETI8p0OS2IIAkiU-YgrFPO4TsQ8t9mrzf2PXpuEk4aoLLn5YeHq8-WTCYakxuKWE1kzH9njpwlSeq5zf1SPlGy2D0Pr1LNSj-C4eh7kSDQctvEPWc5HqiHK8_4ppBmH8GGVCRpzE5HkkpahCCgTPBvtc4dieBegbg")'}}></div>
+                                        </div>
+                                        <div className="flex flex-col gap-4">
+                                            <div className="h-48 w-full bg-cover bg-center rounded-2xl shadow-lg" style={{backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuDZPBpd3M1cyTreT5J6c9-C1BgYH7RkfyGyCk0gvEOPH87OiPIPx7DTS_DUI7ojGUcxtrymPsfYwBz5p7RpiCvkklvvid9CTxuCJvfkcpNMCWq0cqSi40hrVnR4CC6DXpgVaADc9ZZDFCj3mdT9EJrj1A1DQ3nori7Ki5WOcmmLLpoEWRVBAQlKx13ocnMsq9UpY-GRZFPYqook81bod7-Ifog9jv1u30KvrfGXJcH1FNIVqci6S8_OkKJEcp5WQJrPkHMRwdhGEA")'}}></div>
+                                            <div className="h-64 w-full bg-cover bg-center rounded-2xl shadow-lg" style={{backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuC0ug4oekmw0D1WJNu93Y5sARhgBlezjyqqz_FpYZAkU5veoN1ESuDcMqjXEHPRB4KueWKDQ2AWBg37vBbSmDCAYCpgICq5VeS-O2WXDQ2PRg1KIjHmXIEJCBKQpRPTCEO9X88Ig-mDoNwjUUPdHGO8aJBHY05ZtUBy-ekjc4OKK71U1O3osiqryNgrbUqVobMFcDKLPTTA36WX6VpqCV0LTgY7b7o2nHMeF5iykIkKiovZ7v1c1JsceIqyAaXC8EYrhZRipVDSAQ")'}}></div>
+                                        </div>
+                                    </div>
+                                    <div className="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-tr from-primary/20 via-sky-200/20 to-transparent blur-3xl rounded-full opacity-50 pointer-events-none"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+             );
+        };
+
+        // --- App Component ---
+
+        const App = () => {
+            return (
+                <MemoryRouter>
+                    <NavigationMenu />
+                    <Routes>
+                        <Route path="/" element={<HomeVariant1Screen />} />
+                        <Route path="/home2" element={<HomeVariant2Screen />} />
+                        <Route path="/register" element={<RegisterScreen />} />
+                        <Route path="/forgot-password" element={<ForgotPasswordScreen />} />
+                        <Route path="/dashboard" element={<DashboardScreen />} />
+                        <Route path="/dates" element={<DateSelectionScreen />} />
+                        <Route path="/pay" element={<PayScreen />} />
+                        <Route path="/confirmation" element={<ConfirmationScreen />} />
+                    </Routes>
+                </MemoryRouter>
+            );
+        };
+
+        const root = createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

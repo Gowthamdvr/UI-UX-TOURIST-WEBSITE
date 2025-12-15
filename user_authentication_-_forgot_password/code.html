@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tourist Booking - Forgot Password</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13a4ec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom adjustment for form-input from plugin if needed, 
+           though tailwind forms plugin usually handles this. 
+           Adding simple reset just in case. */
+        input:focus {
+            box-shadow: none !important;
+        }
+    </style>
+</head>
+<body class="font-display antialiased">
+<div class="relative flex min-h-screen w-full bg-background-light dark:bg-background-dark overflow-hidden">
+<!-- Left Side: Visual Hero -->
+<div class="hidden lg:flex lg:w-1/2 relative bg-slate-900 h-screen">
+<!-- Background Image -->
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Serene tropical beach with turquoise water and blue sky" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDUxEQOIDPt0M4xYVtWZ8xUDKd13fQ1VtvQ_isw41NwrZBMGdqTwGqqjYmOH21bVMFlDFTh1SiyLgHg4M0DewK_BSF_cO74mwvls_775WUEEX2iz0ZyPMJbPvHJMbPNg3IkfaN8_qE3DC3sSHRwknbuasdLKhy5NicYrZ82QnM_Vhrk2w6NQiJJhKPBeRiuBCB9QbNKwvKgKigRZT5hErXQ93BXhqzJaluaaO-3mvTX7ZCedkh6-mNdTbAF5nA6XfvxwhKFR1CZTg');">
+</div>
+<!-- Primary Color Tint Overlay -->
+<div class="absolute inset-0 bg-primary/20 mix-blend-multiply"></div>
+<!-- Gradient Overlay for Text Readability -->
+<div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex flex-col justify-end p-16">
+<div class="max-w-lg">
+<div class="flex items-center gap-2 text-white mb-6 opacity-90">
+<span class="material-symbols-outlined">flight_takeoff</span>
+<span class="font-bold tracking-wide text-sm uppercase">Tourist Booking</span>
+</div>
+<blockquote class="text-white text-4xl font-bold leading-tight mb-4">
+                        "Your next adventure is waiting just around the corner."
+                    </blockquote>
+<p class="text-slate-200 text-lg font-medium">Recover your account to continue your journey.</p>
+</div>
+</div>
+</div>
+<!-- Right Side: Form Container -->
+<div class="w-full lg:w-1/2 flex flex-col h-screen relative bg-background-light dark:bg-background-dark">
+<!-- Mobile Header / Back Link -->
+<div class="absolute top-0 left-0 w-full p-6 lg:p-10 z-10">
+<a class="group inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 font-bold text-sm hover:text-primary transition-colors" href="#">
+<div class="size-8 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center group-hover:border-primary/30 transition-colors">
+<span class="material-symbols-outlined text-lg">arrow_back</span>
+</div>
+<span>Back to Login</span>
+</a>
+</div>
+<!-- Scrollable Content Area -->
+<div class="flex-1 flex items-center justify-center p-6 lg:p-12 overflow-y-auto">
+<div class="w-full max-w-[480px] flex flex-col gap-8">
+<!-- Header Section -->
+<div class="flex flex-col gap-3">
+<div class="size-14 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-2">
+<span class="material-symbols-outlined text-3xl">lock_reset</span>
+</div>
+<h1 class="text-[#0d171b] dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">
+                            Forgot your password?
+                        </h1>
+<p class="text-[#4c809a] dark:text-slate-400 text-base font-normal leading-normal">
+                            Don't worry, it happens to the best of us. Enter your email below to recover your account.
+                        </p>
+</div>
+<!-- Form Section -->
+<form class="flex flex-col gap-6" onsubmit="event.preventDefault();">
+<!-- Email Input -->
+<div class="flex flex-col gap-2">
+<label class="text-[#0d171b] dark:text-slate-200 text-base font-medium leading-normal" for="email">
+                                Email Address
+                            </label>
+<div class="relative">
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#0d171b] dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-[#cfdfe7] dark:border-slate-700 bg-white dark:bg-slate-800 focus:border-primary h-14 placeholder:text-[#4c809a] dark:placeholder:text-slate-500 px-[15px] text-base font-normal leading-normal transition-all duration-200" id="email" placeholder="name@example.com" type="email" value=""/>
+<div class="absolute right-4 top-1/2 -translate-y-1/2 text-[#4c809a] pointer-events-none">
+<span class="material-symbols-outlined text-xl">mail</span>
+</div>
+</div>
+</div>
+<!-- Action Button -->
+<button class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-4 bg-primary text-slate-50 text-base font-bold leading-normal tracking-[0.015em] hover:bg-sky-500 hover:shadow-lg hover:shadow-primary/20 active:scale-[0.98] transition-all duration-200">
+<span class="truncate">Send Recovery Link</span>
+</button>
+</form>
+<!-- Footer Section -->
+<div class="flex items-center justify-center gap-2 pt-2">
+<span class="text-[#4c809a] dark:text-slate-400 text-sm">Remember your password?</span>
+<a class="text-primary text-sm font-bold hover:underline decoration-2 underline-offset-2" href="#">Log In</a>
+</div>
+</div>
+</div>
+<!-- Mobile Only: Bottom decoration or copyright if needed -->
+<div class="lg:hidden w-full h-2 bg-gradient-to-r from-primary to-sky-300"></div>
+</div>
+</div>
+</body></html>

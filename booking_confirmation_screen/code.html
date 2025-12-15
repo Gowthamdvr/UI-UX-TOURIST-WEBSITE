@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Booking Confirmation - Wanderlust</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13a4ec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "2xl": "2rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom Utilities for dashed lines and specific decorative elements */
+        .ticket-perforation {
+            background-image: radial-gradient(circle at center, #f6f7f8 6px, transparent 7px);
+            background-size: 100% 24px;
+            background-repeat: repeat-y;
+            background-position: left center;
+        }
+        .dark .ticket-perforation {
+            background-image: radial-gradient(circle at center, #101c22 6px, transparent 7px);
+        }
+        
+        .ticket-border-dashed {
+            background-image: linear-gradient(to bottom, #cbd5e1 50%, transparent 50%);
+            background-size: 2px 20px;
+            background-repeat: repeat-y;
+        }
+        .dark .ticket-border-dashed {
+            background-image: linear-gradient(to bottom, #334155 50%, transparent 50%);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display transition-colors duration-200">
+<div class="flex min-h-screen flex-col">
+<!-- Top Navigation -->
+<header class="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/80 backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/80">
+<div class="mx-auto flex h-16 max-w-[1200px] items-center justify-between px-4 sm:px-6 lg:px-8">
+<div class="flex items-center gap-8">
+<a class="flex items-center gap-2 transition-opacity hover:opacity-80" href="#">
+<div class="flex size-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
+<span class="material-symbols-outlined text-2xl">flight_takeoff</span>
+</div>
+<span class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">Wanderlust</span>
+</a>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-sm font-medium text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-primary" href="#">Destinations</a>
+<a class="text-sm font-medium text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-primary" href="#">Stays</a>
+<a class="text-sm font-medium text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-primary" href="#">Flights</a>
+<a class="text-sm font-medium text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-primary" href="#">Experiences</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden sm:flex relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="h-10 w-64 rounded-full border-none bg-slate-100 pl-10 pr-4 text-sm text-slate-900 focus:ring-2 focus:ring-primary dark:bg-slate-800 dark:text-white dark:placeholder-slate-500" placeholder="Search..." type="text"/>
+</div>
+<button class="size-10 overflow-hidden rounded-full ring-2 ring-white dark:ring-slate-800">
+<div class="h-full w-full bg-cover bg-center" data-alt="Portrait of a user smiling" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDaE4hjdqsWkiyFgZmAttE4UFanYfH8Bf0I7sqOFaAgXg8HPvKsEwJDj78oUAqOPKLE60Ym_cAoaDJEpbDdtua8K2ikr2xqmFGJ_6aCMz1Qtb6u3_sVgltbBt9zTcGtGTrZ5R6qqszQBt6LbGnpdKOF9iZzMdpFXf-rr2SE8WMCTeOhBsr0KyTbc25ADjFT-wIUNu1wl1iJYDOpzrRDrLpp6Agy_nRpdkq6Z1yAsALRW5JmEliwoknbPLa7VLyEAQrVKx42uMluOA');"></div>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow px-4 py-8 sm:px-6 lg:px-8">
+<div class="mx-auto max-w-[960px] space-y-8">
+<!-- Success Heading -->
+<div class="flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between animate-fade-in-up">
+<div class="flex gap-4">
+<div class="mt-1 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400">
+<span class="material-symbols-outlined text-3xl">check_circle</span>
+</div>
+<div>
+<h1 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white md:text-4xl">Pack your bags, Alex!</h1>
+<p class="mt-1 text-lg text-slate-500 dark:text-slate-400">Your trip to Bali is confirmed. Order #TRV-88291</p>
+</div>
+</div>
+<div class="flex gap-3">
+<button class="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700">
+<span class="material-symbols-outlined text-lg">share</span>
+                            Share
+                        </button>
+<button class="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-slate-900">
+<span class="material-symbols-outlined text-lg">download</span>
+                            Download PDF
+                        </button>
+</div>
+</div>
+<!-- Ticket Card -->
+<div class="relative overflow-hidden rounded-2xl bg-white shadow-xl dark:bg-slate-800 border border-slate-100 dark:border-slate-700 flex flex-col md:flex-row">
+<!-- Decorative Top/Side Accent -->
+<div class="absolute left-0 top-0 h-1.5 w-full bg-gradient-to-r from-primary to-cyan-400 md:h-full md:w-1.5 md:bg-gradient-to-b"></div>
+<!-- Main Content (Left) -->
+<div class="flex-1 p-6 md:p-8">
+<div class="mb-6 flex items-start justify-between">
+<div>
+<span class="mb-2 inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20 dark:bg-green-900/20 dark:text-green-400">Confirmed</span>
+<h2 class="text-2xl font-bold text-slate-900 dark:text-white">The Azure Resort &amp; Spa</h2>
+<div class="mt-1 flex items-center text-slate-500 dark:text-slate-400">
+<span class="material-symbols-outlined mr-1 text-lg">location_on</span>
+<span>Ubud, Bali, Indonesia</span>
+</div>
+</div>
+<div class="h-16 w-24 overflow-hidden rounded-lg bg-slate-200 md:h-20 md:w-32">
+<div class="h-full w-full bg-cover bg-center" data-alt="Tropical resort swimming pool with palm trees" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCDj9CLvSUjw5ZoWsA-XR9pETywrSnjTSHXB3i6SFoez0ZpBKekMqwsadU7RUewWEftKubYToY6xayCEpgY0onFabPyYwdI9kybuG_02zNmflhz9yTh8RY2nulsXdBHIzEjw1DmhmsJkp1wwvbU9ZmotH6nr-JpPmTljXXUQ3nSXeewO4d6aKO-BIiJ2_aBO83ShZ5G3pulnwlq9UHV5IQRqvuMtnNI2hBvjaCQLHaegDt0M85_ZKJtQ8cfSEtS3oOCdSDe6hDDAQ');"></div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-y-6 gap-x-4 md:grid-cols-4 border-t border-slate-100 dark:border-slate-700 pt-6">
+<div>
+<p class="text-xs font-medium uppercase tracking-wider text-slate-500 dark:text-slate-400">Check-in</p>
+<p class="mt-1 text-base font-bold text-slate-900 dark:text-white">Mon, Aug 12</p>
+<p class="text-sm text-slate-500 dark:text-slate-400">14:00 PM</p>
+</div>
+<div>
+<p class="text-xs font-medium uppercase tracking-wider text-slate-500 dark:text-slate-400">Check-out</p>
+<p class="mt-1 text-base font-bold text-slate-900 dark:text-white">Fri, Aug 16</p>
+<p class="text-sm text-slate-500 dark:text-slate-400">11:00 AM</p>
+</div>
+<div>
+<p class="text-xs font-medium uppercase tracking-wider text-slate-500 dark:text-slate-400">Guests</p>
+<p class="mt-1 text-base font-bold text-slate-900 dark:text-white">2 Adults</p>
+<p class="text-sm text-slate-500 dark:text-slate-400">1 Room</p>
+</div>
+<div>
+<p class="text-xs font-medium uppercase tracking-wider text-slate-500 dark:text-slate-400">Room Type</p>
+<p class="mt-1 text-base font-bold text-slate-900 dark:text-white">Ocean Villa</p>
+<p class="text-sm text-slate-500 dark:text-slate-400">King Bed</p>
+</div>
+</div>
+<div class="mt-8 flex gap-3">
+<button class="text-primary hover:text-primary/80 font-semibold text-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-lg">calendar_add_on</span>
+                                Add to Calendar
+                             </button>
+<button class="text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 font-semibold text-sm flex items-center gap-1 ml-4">
+<span class="material-symbols-outlined text-lg">receipt_long</span>
+                                View Receipt
+                             </button>
+</div>
+</div>
+<!-- Perforation / Divider -->
+<div class="relative hidden md:block w-px bg-transparent">
+<div class="absolute inset-y-0 -left-3 w-6 ticket-perforation z-10"></div>
+<div class="h-full w-px ticket-border-dashed absolute left-0 top-0"></div>
+</div>
+<!-- Mobile Divider -->
+<div class="relative block md:hidden h-px w-full my-2">
+<div class="w-full h-px border-t border-dashed border-slate-300 dark:border-slate-600"></div>
+<div class="absolute -left-3 -top-3 h-6 w-6 rounded-full bg-background-light dark:bg-background-dark"></div>
+<div class="absolute -right-3 -top-3 h-6 w-6 rounded-full bg-background-light dark:bg-background-dark"></div>
+</div>
+<!-- Side Panel (Right) -->
+<div class="bg-slate-50 dark:bg-slate-800/50 p-6 md:w-80 flex flex-col justify-between">
+<div>
+<h3 class="font-bold text-slate-900 dark:text-white">Booking Summary</h3>
+<div class="mt-4 space-y-3">
+<div class="flex justify-between text-sm">
+<span class="text-slate-500 dark:text-slate-400">4 Nights</span>
+<span class="font-medium text-slate-900 dark:text-white">$1,000.00</span>
+</div>
+<div class="flex justify-between text-sm">
+<span class="text-slate-500 dark:text-slate-400">Taxes &amp; Fees</span>
+<span class="font-medium text-slate-900 dark:text-white">$240.00</span>
+</div>
+<div class="my-3 h-px bg-slate-200 dark:bg-slate-700"></div>
+<div class="flex justify-between text-base font-bold">
+<span class="text-slate-900 dark:text-white">Total Paid</span>
+<span class="text-primary">$1,240.00</span>
+</div>
+<p class="text-xs text-slate-400 mt-1">Paid via Visa •••• 4242</p>
+</div>
+</div>
+<div class="mt-8 flex flex-col items-center">
+<div class="bg-white p-2 rounded-lg shadow-sm">
+<!-- Placeholder QR Code -->
+<img alt="QR Code for booking #TRV-88291" class="h-32 w-32" data-alt="Black and white QR code pattern" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-wVAmsdqav1gQ5D4tM6wcIVCW6s_51qki1dVUukNrvK31jop4xunXoX1O_19WedKZiMZCAFbqdq8RDmAYcFyZTZAM6rN3CPGDXBbvwau9pPN8rmQb08NePzmCLGkRT4mWzQfsklqWfaZgabe9rOAnzXumM6dAC0Yz_hwbstDVnVhghMlrF6YsFwwIIoCLT906baHvz1I0aL3BzZnhKFO5e95-CJABAhXOKkxnp10dJQA8vRPE8cXnx3YDypcj2mac8VZEkLycbQ"/>
+</div>
+<p class="mt-3 text-xs text-center text-slate-400">Scan at check-in counter</p>
+</div>
+</div>
+</div>
+<!-- Recommendations / Upsell -->
+<div class="pt-8">
+<h3 class="mb-6 text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">explore</span>
+                        Complete your trip
+                    </h3>
+<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+<!-- Card 1 -->
+<div class="group relative overflow-hidden rounded-xl bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-md dark:bg-slate-800">
+<div class="aspect-[4/3] w-full overflow-hidden bg-slate-200">
+<div class="h-full w-full bg-cover bg-center transition-transform duration-500 group-hover:scale-110" data-alt="Red sporty convertible car on a coastal road" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBXxJNF7Qi3q6RVT2_VhhI5oDq65g8hAw4_X-9o1FdcC1VNv1bBOq4QR38PLCdHMrW28SyiXpIvsTAKaXTGsPUfMNKzj1AqqjRpSlIS_ijuNp051wJDsCzgbVlHO--ALAMdwdZ8Bl5gdPHPJf5eI1BVnFhtAw0Xl3qOfGawU2T0SMir4bhSdGlElK0_82-pNdcMhfPvI0k7vNtSD3wF--9MwXFZMDbkS9wjeXjv-nNCF-mGRidruydYUhaKF__-AT2ZkJFnHYOqzQ');"></div>
+</div>
+<div class="p-4">
+<h4 class="font-bold text-slate-900 dark:text-white">Rent a Car in Bali</h4>
+<p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Explore the island at your own pace. Convertible options available.</p>
+<div class="mt-4 flex items-center justify-between">
+<span class="text-sm font-semibold text-slate-900 dark:text-white">From $45/day</span>
+<button class="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary hover:bg-primary hover:text-white transition-colors">View Cars</button>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="group relative overflow-hidden rounded-xl bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-md dark:bg-slate-800">
+<div class="aspect-[4/3] w-full overflow-hidden bg-slate-200">
+<div class="h-full w-full bg-cover bg-center transition-transform duration-500 group-hover:scale-110" data-alt="Two people snorkeling in clear blue water" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDH37czMqRiqC5p2qZD0Qx2U2OZ1gGcI_9Cfy4lRCsZxQ1dAJYJetm2n4JFMxTJadM-ieR9-sBvIjK2qi0HuFOwn5Q4lLMnFYxj8bLJ5PpHFf12nR3zWwLXv2-OtCFXBG2LsYOq1h4m5f998ISomVr1E7ZtAT7IMTm7No4952z1GVFuUjtLHfkMQD0sw2NleSSJrkDMcJVarZFE3NaQpZf6_9E2RIRLDnGJg9fCg9iqSstt8h6-kOyxfYAOxPjuKOJ4qbqq34PSsA');"></div>
+</div>
+<div class="p-4">
+<h4 class="font-bold text-slate-900 dark:text-white">Snorkeling Adventure</h4>
+<p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Discover vibrant coral reefs and marine life near Nusa Penida.</p>
+<div class="mt-4 flex items-center justify-between">
+<span class="text-sm font-semibold text-slate-900 dark:text-white">$65 per person</span>
+<button class="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary hover:bg-primary hover:text-white transition-colors">Book Now</button>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="group relative overflow-hidden rounded-xl bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-md dark:bg-slate-800">
+<div class="aspect-[4/3] w-full overflow-hidden bg-slate-200">
+<div class="h-full w-full bg-cover bg-center transition-transform duration-500 group-hover:scale-110" data-alt="Traditional Balinese spa treatment with flowers" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCkgHHKvQUpL8yEhp9tw4XZ4RThpnYg6vXLY5MlqcAXLfzLtk8XrW53WtjrKhWL_Xfj-hKjQtZ6TBaLYXn69sM62pSpz6lVooqxAYqzTuhHHnJNn6vpgSl3z2V-pdxMsaOkp7i5-2JsuEi4BlCBXa45LIdJtVlEcZXN3lF2oPfVGPae_DQbnuDV63yRmDJvhT7oJB903KSt3QNv2A-niFnRVVzB8PmOkNgUrTRjqvUJRnhF_D4vNa4vCaky-XJlmsvxK7TZnAXUZA');"></div>
+</div>
+<div class="p-4">
+<h4 class="font-bold text-slate-900 dark:text-white">Luxury Spa Day</h4>
+<p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Unwind with a 90-minute full body massage and flower bath.</p>
+<div class="mt-4 flex items-center justify-between">
+<span class="text-sm font-semibold text-slate-900 dark:text-white">$80 per person</span>
+<button class="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary hover:bg-primary hover:text-white transition-colors">Reserve</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="mt-12 border-t border-slate-200 bg-white py-8 dark:border-slate-800 dark:bg-slate-900">
+<div class="mx-auto max-w-[960px] px-4 sm:px-6 lg:px-8">
+<div class="flex flex-col items-center justify-between gap-4 md:flex-row">
+<p class="text-sm text-slate-500 dark:text-slate-400">Need help with your booking? <a class="font-medium text-primary hover:underline" href="#">Contact Support</a></p>
+<div class="flex gap-6">
+<a class="text-sm text-slate-500 hover:text-primary dark:text-slate-400" href="#">Privacy Policy</a>
+<a class="text-sm text-slate-500 hover:text-primary dark:text-slate-400" href="#">Terms of Service</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+</body></html>
